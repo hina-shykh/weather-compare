@@ -1,3 +1,4 @@
+import json
 import requests
 
 
@@ -52,8 +53,14 @@ def compare_cities(city1, city2):
 
     return {city1: temp1, city2: temp2}
 
+def save_results(results, filename="results.json"):
+    with open(filename, "w") as f:
+        json.dump(results, f, indent=4)
+    print(f"Saved to {filename}")
 
 if __name__ == "__main__":
     first = input("Enter first city: ")
     second = input("Enter second city: ")
-    compare_cities(first, second)
+    results = compare_cities(first, second)
+    if results:
+        save_results(results)
