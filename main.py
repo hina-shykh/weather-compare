@@ -25,7 +25,35 @@ def get_temperature(lat, lon):
         return None
 
 
+def get_city_temperature(city):
+    coords = get_coordinates(city)
+    if coords is None:
+        return None
+    return get_temperature(coords[0], coords[1])
+
+
+def compare_cities(city1, city2):
+    temp1 = get_city_temperature(city1)
+    temp2 = get_city_temperature(city2)
+
+    if temp1 is None or temp2 is None:
+        print("Could not get data. Check the city names or your internet.")
+        return None
+
+    print(f"{city1}: {temp1} °C")
+    print(f"{city2}: {temp2} °C")
+
+    if temp1 > temp2:
+        print(f"{city1} is hotter by {temp1 - temp2:.1f} °C")
+    elif temp2 > temp1:
+        print(f"{city2} is hotter by {temp2 - temp1:.1f} °C")
+    else:
+        print("Both cities have the same temperature")
+
+    return {city1: temp1, city2: temp2}
+
+
 if __name__ == "__main__":
-    coords = get_coordinates("Karachi")
-    if coords:
-        print(get_temperature(coords[0], coords[1]))
+    first = input("Enter first city: ")
+    second = input("Enter second city: ")
+    compare_cities(first, second)
