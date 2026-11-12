@@ -14,5 +14,18 @@ def get_coordinates(city):
         return None
 
 
+def get_temperature(lat, lon):
+    url = "https://api.open-meteo.com/v1/forecast"
+    params = {"latitude": lat, "longitude": lon, "current": "temperature_2m"}
+    try:
+        resp = requests.get(url, params=params, timeout=10)
+        resp.raise_for_status()
+        return resp.json()["current"]["temperature_2m"]
+    except requests.RequestException:
+        return None
+
+
 if __name__ == "__main__":
-    print(get_coordinates("Karachi"))
+    coords = get_coordinates("Karachi")
+    if coords:
+        print(get_temperature(coords[0], coords[1]))
